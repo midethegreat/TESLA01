@@ -1,0 +1,7 @@
+{
+  "name": "Tesla Investment Platform",
+  "description": "A high-end cryptocurrency investment platform landing page inspired by Tesla's aesthetic, featuring investment plans, a calculator, and smart trading statistics.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
