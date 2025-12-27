@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
       host: "0.0.0.0",
       proxy: {
         "/api": {
-          target: "http://localhost:5000",
+          target: env.VITE_API_URL || "https://tesla-backend-ipk1.onrender.com",
           changeOrigin: true,
           secure: false,
         },
@@ -20,21 +20,11 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env.API_KEY": JSON.stringify(env.GEMINI_API_KEY),
       "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),
+      "process.env.VITE_API_URL": JSON.stringify(env.VITE_API_URL || "https://tesla-backend-ipk1.onrender.com"),
     },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "."),
-      },
-    },
-    build: {
-      outDir: "dist",
-      sourcemap: false,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            vendor: ["react", "react-dom", "react-router-dom"],
-          },
-        },
       },
     },
   }

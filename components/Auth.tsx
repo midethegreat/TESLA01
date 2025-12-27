@@ -79,11 +79,6 @@ const Auth: React.FC<AuthProps> = ({ onBack, onLoginClick }) => {
       return
     }
 
-    if (!/^\d{6}$/.test(verificationCode)) {
-      setError("Please enter a valid 6-digit code")
-      return
-    }
-
     setRefreshing(true)
     try {
       await verifyEmail(userId, verificationCode)
@@ -112,9 +107,8 @@ const Auth: React.FC<AuthProps> = ({ onBack, onLoginClick }) => {
           <div className="space-y-4">
             <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Verify Your Email</h1>
             <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed">
-              We sent a 6-digit verification code to <span className="text-white font-bold">{email}</span>.
+              Sent to <span className="text-white font-bold">{email}</span>.
             </p>
-            <p className="text-amber-400 text-[10px] font-bold uppercase tracking-widest">Code expires in 15 minutes</p>
           </div>
 
           <div className="space-y-1.5">
@@ -123,12 +117,10 @@ const Auth: React.FC<AuthProps> = ({ onBack, onLoginClick }) => {
             </label>
             <input
               type="text"
-              inputMode="numeric"
-              maxLength={6}
               value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ""))}
-              placeholder="000000"
-              className="w-full bg-[#1c1c1c] border border-white/5 rounded-xl py-3.5 md:py-4 px-5 text-2xl md:text-3xl text-white focus:outline-none focus:border-amber-500/30 shadow-inner text-center tracking-[0.5em] font-mono font-bold"
+              onChange={(e) => setVerificationCode(e.target.value)}
+              placeholder="Enter code from email"
+              className="w-full bg-[#1c1c1c] border border-white/5 rounded-xl py-3.5 md:py-4 px-5 text-sm text-white focus:outline-none focus:border-amber-500/30 shadow-inner text-center tracking-widest font-mono"
             />
           </div>
 
@@ -139,8 +131,8 @@ const Auth: React.FC<AuthProps> = ({ onBack, onLoginClick }) => {
           <div className="pt-4 flex flex-col gap-4">
             <button
               onClick={handleVerifyEmail}
-              disabled={refreshing || verificationCode.length !== 6}
-              className="w-full py-4 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black uppercase text-[10px] tracking-widest shadow-2xl flex items-center justify-center gap-3 disabled:opacity-50 hover:scale-105 transition"
+              disabled={refreshing || !verificationCode}
+              className="w-full py-4 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black uppercase text-[10px] tracking-widest shadow-2xl flex items-center justify-center gap-3 disabled:opacity-50"
             >
               {refreshing ? <Loader2 className="animate-spin" size={16} /> : <CheckCircle size={16} />}
               Verify Email

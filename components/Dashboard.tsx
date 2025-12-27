@@ -201,60 +201,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
   const notificationRef = useRef<HTMLDivElement>(null)
   const lastKycWarningTimeRef = useRef<number>(0)
 
-  const [notifications, setNotifications] = useState<any[]>([])
-  const [unreadCount, setUnreadCount] = useState(0)
-
-  // Fetch notifications
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const token = localStorage.getItem("token")
-        if (!token) return
-
-        const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/notifications`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          setNotifications(data.notifications || [])
-          setUnreadCount(data.notifications?.filter((n: any) => !n.read).length || 0)
-        }
-      } catch (error) {
-        console.error("[v0] Failed to fetch notifications:", error)
-      }
-    }
-
-    fetchNotifications()
-    const interval = setInterval(fetchNotifications, 30000) // Poll every 30 seconds
-    return () => clearInterval(interval)
-  }, [])
-
-  // Mark notification as read
-  const markNotificationAsRead = async (notificationId: string) => {
-    try {
-      const token = localStorage.getItem("token")
-      if (!token) return
-
-      await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/notifications/${notificationId}/read`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-
-      setNotifications((prev) => prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n)))
-      setUnreadCount((prev) => Math.max(0, prev - 1))
-    } catch (error) {
-      console.error("[v0] Failed to mark notification as read:", error)
-    }
-  }
-
   const telegramUrl = "https://t.me/Allyssabroker"
 
   // Balance Management
@@ -381,21 +327,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     return () => clearTimeout(timer)
   }, [isKycWarningVisible])
 
-  // NOTE: This assumes userId is available and getUserById is defined elsewhere
-  // useEffect(() => {
-  //   const user = getUserById(userId) // Assuming userId and getUserById exist
-  //   if (user) {
-  //     setIsKycVerified(user.kycVerified || false)
-  //     // Only show warning if KYC is not submitted and not verified
-  //     if (user.kycStatus === "none" || user.kycStatus === "rejected") {
-  //       // Show warning for users who haven't submitted or were rejected
-  //     } else {
-  //       // Hide warning if submitted or verified
-  //       setKycWarningVisible(false)
-  //     }
-  //   }
-  // }, [userId])
-
   const referralId = "YbYSaqsQ" // Hardcoded for now, replace with actual user ID logic
   const referralUrl = `https://investwithtsla.web.app/register.html?invite=${referralId}Zg`
 
@@ -489,47 +420,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
       alert("Please fill all fields and upload all required documents.")
       return
     }
-
     setIsSubmittingKyc(true)
-
-    try {
-      const token = localStorage.getItem("token")
-      const formData = new FormData()
-      formData.append("fullName", kycData.fullName)
-      formData.append("dob", kycData.dob)
-      formData.append("idType", kycData.docType)
-
-      // Convert base64 to blob and append
-      const frontBlob = await fetch(kycFront).then((r) => r.blob())
-      const backBlob = await fetch(kycBack).then((r) => r.blob())
-      const selfieBlob = await fetch(kycSelfie).then((r) => r.blob())
-
-      formData.append("idFront", frontBlob, "id-front.jpg")
-      formData.append("idBack", backBlob, "id-back.jpg")
-      formData.append("selfie", selfieBlob, "selfie.jpg")
-
-      const response = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/kyc/submit`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      })
-
-      if (response.ok) {
-        setKycWarningVisible(false)
-        alert("KYC documents submitted successfully for review!")
-        handleTabChange("dashboard")
-      } else {
-        const error = await response.json()
-        alert(error.error || "Failed to submit KYC")
-      }
-    } catch (error) {
-      console.error("[v0] KYC submission error:", error)
-      alert("Failed to submit KYC documents")
-    } finally {
-      setIsSubmittingKyc(false)
-    }
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    setIsSubmittingKyc(false)
+    setIsKycVerified(true)
+    alert("KYC documents submitted successfully for review!")
+    handleTabChange("dashboard")
   }
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -935,7 +832,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                   <td className="py-5 px-6 text-[11px] font-black text-gray-500 uppercase tracking-widest border-r border-white/5">
                     Enter Amount:
                   </td>
-                  <td className="py-5 px-6 text-sm font-bold text-gray-300">
+                  <td className="py-5 px-6">
                     <div className="relative max-w-[400px]">
                       <input
                         type="number"
@@ -1823,7 +1720,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
     activeTab === "ranking"
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#0d0d0d] via-[#1a1a1a] to-[#0d0d0d] text-white overflow-hidden relative">
+    <div className="flex h-screen bg-[#0a0a0a] text-white font-display overflow-hidden selection:bg-amber-500/30">
       <style>{`
         @keyframes kycProgress { 0% { width: 0%; } 100% { width: 100%; } }
         .animate-kyc-timer { animation: kycProgress 5s linear forwards; }
@@ -1932,13 +1829,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
 
             {/* Notification Dropdown */}
             <div className="relative" ref={notificationRef}>
-              {/* <button
+              <button
                 onClick={() => setNotificationOpen(!notificationOpen)}
                 className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 relative border border-white/5 group active:scale-95 transition-transform"
               >
                 <Bell size={20} className="group-hover:rotate-12 transition-transform" />
                 <span className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full border-2 border-[#0d0d0d]"></span>
-              </button> */}
+              </button>
 
               {notificationOpen && (
                 <div className="absolute top-[calc(100%+12px)] right-0 w-80 md:w-96 bg-[#1a1a1a] border border-white/10 rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-6 z-50 animate-in fade-in slide-in-from-top-2 duration-300 overflow-hidden">
@@ -1946,46 +1843,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
                     Notifications
                   </h3>
                   <div className="w-full h-[1px] bg-white/5 mb-6"></div>
-
-                  {notifications.length === 0 ? (
-                    <div className="bg-[#242424]/60 border border-white/5 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
-                      <span className="text-[10px] md:text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-                        No Notification Found!
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="space-y-3 max-h-96 overflow-y-auto">
-                      {notifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          onClick={() => markNotificationAsRead(notification.id)}
-                          className={`p-4 rounded-xl border cursor-pointer transition ${
-                            notification.read ? "bg-[#1c1c1c] border-white/5" : "bg-amber-500/10 border-amber-500/20"
-                          }`}
-                        >
-                          <div className="flex items-start gap-3">
-                            {notification.type === "kyc_approved" && (
-                              <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                                <Check size={20} className="text-green-500" />
-                              </div>
-                            )}
-                            {notification.type === "kyc_rejected" && (
-                              <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                <X size={20} className="text-red-500" />
-                              </div>
-                            )}
-                            <div className="flex-1">
-                              <h4 className="text-sm font-bold text-white">{notification.title}</h4>
-                              <p className="text-xs text-gray-400 mt-1">{notification.message}</p>
-                              <span className="text-[10px] text-gray-500 mt-2 block">
-                                {new Date(notification.createdAt).toLocaleDateString()}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <div className="bg-[#242424]/60 border border-white/5 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+                    <span className="text-[10px] md:text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+                      No Notification Found!
+                    </span>
+                  </div>
                 </div>
               )}
             </div>

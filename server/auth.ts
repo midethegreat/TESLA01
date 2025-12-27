@@ -2,7 +2,7 @@ import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import db from "./db"
 import { JWT_SECRET, JWT_EXPIRY } from "./config"
-import { generateId, generateVerificationCode } from "./utils"
+import { generateId, generateToken } from "./utils"
 
 export async function hashPassword(password: string): Promise<string> {
   return bcryptjs.hash(password, 10)
@@ -58,8 +58,8 @@ export function getUserById(userId: string) {
 }
 
 export function createEmailToken(userId: string): string {
-  const token = generateVerificationCode()
-  const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString() // 15 minutes
+  const token = generateToken()
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
   const tokenId = generateId()
 
   const stmt = db.prepare(`

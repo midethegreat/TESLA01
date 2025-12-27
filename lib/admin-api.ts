@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000"
+const API_URL = import.meta.env.VITE_API_URL || "https://tesla-backend-ipk1.onrender.com"
 
 export async function adminLogin(email: string, password: string) {
   const response = await fetch(`${API_URL}/api/admin/login`, {

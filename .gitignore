@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+yarn.lock
+pnpm-lock.yaml
+npm-shrinkwrap.json
 
 # next.js
 /.next/
@@ -19,20 +22,33 @@ yarn-error.log*
 
 # env files
 .env*
+.env.local
+.env.*.local
 
 # vercel
 .vercel
+railway.json
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
-# local state
-/.local
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
 
-# uploads
-/public/uploads/*
-!/public/uploads/.gitkeep
+# Build artifacts
+*.tgz
+*.zip
 
-# database
-/data/db.json
+# Logs
+logs
+*.log
+lerna-debug.log*
+
+# OS files
+Thumbs.db

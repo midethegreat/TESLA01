@@ -16,7 +16,6 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [processingId, setProcessingId] = useState<string | null>(null)
   const [rejectReason, setRejectReason] = useState("")
-  const [showRejectInput, setShowRejectInput] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -24,7 +23,7 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
         const data = await getKYCRequests(token)
         setRequests(data)
       } catch (error) {
-        console.error("[v0] Failed to fetch KYC requests:", error)
+        console.error("Failed to fetch KYC requests")
       } finally {
         setLoading(false)
       }
@@ -37,18 +36,16 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
     setProcessingId(userId)
     try {
       await approveKYC(token, userId)
-      setRequests((prev) => prev.filter((r) => r.userId !== userId))
-      alert("KYC approved successfully! User will receive a congratulations notification.")
+      setRequests((prev) => prev.map((r) => (r.userId === userId ? { ...r, status: "verified" as const } : r)))
     } catch (error) {
-      console.error("[v0] Failed to approve KYC:", error)
-      alert("Failed to approve KYC. Please try again.")
+      console.error("Failed to approve KYC")
     } finally {
       setProcessingId(null)
     }
   }
 
   const handleReject = async (userId: string) => {
-    if (!rejectReason.trim()) {
+    if (!rejectReason) {
       alert("Please enter a rejection reason")
       return
     }
@@ -56,14 +53,11 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
     setProcessingId(userId)
     try {
       await rejectKYC(token, userId, rejectReason)
-      setRequests((prev) => prev.filter((r) => r.userId !== userId))
+      setRequests((prev) => prev.map((r) => (r.userId === userId ? { ...r, status: "rejected" as const } : r)))
       setRejectReason("")
-      setShowRejectInput(null)
       setExpandedId(null)
-      alert("KYC rejected. User will be notified with the reason.")
     } catch (error) {
-      console.error("[v0] Failed to reject KYC:", error)
-      alert("Failed to reject KYC. Please try again.")
+      console.error("Failed to reject KYC")
     } finally {
       setProcessingId(null)
     }
@@ -112,7 +106,7 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
                     <div className="space-y-2">
                       <p className="text-xs text-gray-400">ID Front</p>
                       <img
-                        src={`${import.meta.env.VITE_API_URL || "http://localhost:5000"}${request.idFrontPath}`}
+                        src={`${import.meta.env.VITE_API_URL}${request.idFrontPath}`}
                         alt="ID Front"
                         className="w-full rounded border border-white/10"
                       />
@@ -120,7 +114,7 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
                     <div className="space-y-2">
                       <p className="text-xs text-gray-400">ID Back</p>
                       <img
-                        src={`${import.meta.env.VITE_API_URL || "http://localhost:5000"}${request.idBackPath}`}
+                        src={`${import.meta.env.VITE_API_URL}${request.idBackPath}`}
                         alt="ID Back"
                         className="w-full rounded border border-white/10"
                       />
@@ -128,71 +122,48 @@ const AdminKYC: React.FC<AdminKYCProps> = ({ token }) => {
                     <div className="space-y-2">
                       <p className="text-xs text-gray-400">Selfie</p>
                       <img
-                        src={`${import.meta.env.VITE_API_URL || "http://localhost:5000"}${request.selfiePath}`}
+                        src={`${import.meta.env.VITE_API_URL}${request.selfiePath}`}
                         alt="Selfie"
                         className="w-full rounded border border-white/10"
                       />
                     </div>
                   </div>
 
-                  {showRejectInput === request.userId ? (
-                    <div className="space-y-3">
-                      <input
-                        type="text"
-                        placeholder="Enter rejection reason (e.g., 'ID image is blurry')..."
-                        value={rejectReason}
-                        onChange={(e) => setRejectReason(e.target.value)}
-                        className="w-full bg-[#1c1c1c] border border-white/10 rounded-lg py-3 px-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-red-500/50"
-                        disabled={processingId === request.userId}
-                      />
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() => handleReject(request.userId)}
-                          disabled={processingId === request.userId || !rejectReason.trim()}
-                          className="flex-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 font-semibold py-2 px-4 rounded transition flex items-center justify-center gap-2 disabled:opacity-50"
-                        >
-                          {processingId === request.userId ? (
-                            <Loader2 className="animate-spin" size={18} />
-                          ) : (
-                            <X size={18} />
-                          )}
-                          Confirm Reject
-                        </button>
-                        <button
-                          onClick={() => {
-                            setShowRejectInput(null)
-                            setRejectReason("")
-                          }}
-                          disabled={processingId === request.userId}
-                          className="px-4 text-gray-400 hover:text-white transition"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => handleApprove(request.userId)}
-                        disabled={processingId === request.userId}
-                        className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 font-semibold py-3 px-4 rounded transition flex items-center justify-center gap-2 disabled:opacity-50"
-                      >
-                        {processingId === request.userId ? (
-                          <Loader2 className="animate-spin" size={18} />
-                        ) : (
-                          <Check size={18} />
-                        )}
-                        Approve KYC
-                      </button>
-                      <button
-                        onClick={() => setShowRejectInput(request.userId)}
-                        disabled={processingId === request.userId}
-                        className="flex-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 font-semibold py-3 px-4 rounded transition flex items-center justify-center gap-2 disabled:opacity-50"
-                      >
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleApprove(request.userId)}
+                      disabled={processingId === request.userId}
+                      className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 font-semibold py-2 px-4 rounded transition flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {processingId === request.userId ? (
+                        <Loader2 className="animate-spin" size={18} />
+                      ) : (
+                        <Check size={18} />
+                      )}
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleReject(request.userId)}
+                      disabled={processingId === request.userId}
+                      className="flex-1 bg-red-500/20 hover:bg-red-500/30 text-red-400 font-semibold py-2 px-4 rounded transition flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {processingId === request.userId ? (
+                        <Loader2 className="animate-spin" size={18} />
+                      ) : (
                         <X size={18} />
-                        Reject KYC
-                      </button>
-                    </div>
+                      )}
+                      Reject
+                    </button>
+                  </div>
+
+                  {processingId === request.userId && (
+                    <input
+                      type="text"
+                      placeholder="Reason for rejection..."
+                      value={rejectReason}
+                      onChange={(e) => setRejectReason(e.target.value)}
+                      className="w-full bg-[#1c1c1c] border border-white/10 rounded-lg py-3 px-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-red-500/50"
+                    />
                   )}
                 </div>
               )}

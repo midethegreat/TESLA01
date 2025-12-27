@@ -9,6 +9,5 @@ export function generateToken(): string {
 }
 
 export function generateVerificationCode(): string {
-  // Generate a random 6-digit number (100000 to 999999)
-  return Math.floor(100000 + Math.random() * 900000).toString()
+  return crypto.randomBytes(3).toString("hex").toUpperCase()
 }
