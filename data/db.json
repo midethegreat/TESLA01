@@ -1,43 +1,16 @@
 {
   "users": [
     {
-      "id": "lz3x8p",
+      "id": "q2ycb",
       "email": "shoremiayomide13@gmail.com",
-      "password": "$2a$10$DLBWkOixbAxjU0Aeh0WZPOYpgSAs7A9/n0J92kFdt281QTH59tlqi",
-      "firstName": "lop",
-      "lastName": "sor",
-      "country": "Nigeria",
-      "emailVerified": false,
-      "verificationToken": "sz9s4c9nftatp6e3ec0xds",
-      "createdAt": "2025-12-26T05:50:29.828Z",
-      "profileImage": "/uploads/lz3x8p-1766743231130-68f7f0001c1f80efbec60313.webp",
-      "kyc": {
-        "fullName": "soremi ayomide",
-        "dob": "2025-12-09",
-        "idType": "passport",
-        "idFront": "/uploads/lz3x8p-front-1766744786135-68f7f0001c1f80efbec60313.webp",
-        "idBack": "/uploads/lz3x8p-back-1766744786139-68f7f0001c1f80efbec60313.webp",
-        "selfie": "/uploads/lz3x8p-selfie-1766744786141-68f7f0001c1f80efbec60313.webp",
-        "submittedAt": "2025-12-26T10:26:26.143Z",
-        "verified": false,
-        "verifiedAt": "2025-12-26T10:26:52.082Z",
-        "verifiedBy": "admin"
-      },
-      "joiningDate": "2025-12-26",
-      "kycStatus": "verified",
-      "kycVerified": true
-    },
-    {
-      "id": "x787rv",
-      "email": "lawsonannie033@gmail.com",
-      "password": "$2a$10$w1.EaO8k.6HaBNY0cey9G.UdU97dYOrMii7cdFGChndcSDWjn5xlC",
+      "password": "$2a$10$CFmbe3fIYJek1kTaczFNYOcr5P2EdESO85vSx3ZefQgrfk8fDzGlC",
       "firstName": "aYomide",
       "lastName": "soremi",
       "country": "Nigeria",
       "emailVerified": false,
-      "verificationToken": "u7scpxv91mbt5ydm2gays",
+      "verificationToken": "eo1g0vevzonhequ1csbbyw",
       "referrerId": null,
-      "createdAt": "2025-12-26T10:24:49.912Z",
+      "createdAt": "2025-12-27T21:48:43.305Z",
       "kycStatus": "not submitted",
       "kycVerified": false
     }

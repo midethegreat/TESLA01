@@ -1,5 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://tesla-backend-ipk1.onrender.com"
-
 export async function apiRequest(endpoint: string, options?: RequestInit) {
   const token = localStorage.getItem("authToken")
   const headers: HeadersInit = {
@@ -12,9 +10,8 @@ export async function apiRequest(endpoint: string, options?: RequestInit) {
   }
 
   try {
-    const fullUrl = `${API_BASE_URL}${endpoint}`
-    console.log("[v0] Making API request to:", fullUrl)
-    const response = await fetch(fullUrl, {
+    console.log("[v0] Making API request to:", endpoint)
+    const response = await fetch(endpoint, {
       ...options,
       headers,
       credentials: "include",
@@ -36,7 +33,7 @@ export async function apiRequest(endpoint: string, options?: RequestInit) {
   } catch (error: any) {
     console.error("[v0] API Request Failed:", error.message)
     if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new Error(`Failed to connect to backend. API URL: ${API_BASE_URL}`)
+      throw new Error("Failed to connect to server. Make sure the backend is running on port 5000.")
     }
     throw error
   }
@@ -69,7 +66,7 @@ export const documentsAPI = {
     const headers: HeadersInit = {}
     if (token) headers.Authorization = `Bearer ${token}`
 
-    return fetch(`${API_BASE_URL}/api/documents/upload`, {
+    return fetch("/api/documents/upload", {
       method: "POST",
       headers,
       body: formData,
@@ -90,7 +87,7 @@ export const profileAPI = {
     const headers: HeadersInit = {}
     if (token) headers.Authorization = `Bearer ${token}`
 
-    return fetch(`${API_BASE_URL}/api/profile/image`, {
+    return fetch("/api/profile/image", {
       method: "POST",
       headers,
       body: formData,

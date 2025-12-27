@@ -10,13 +10,13 @@ This document explains how to set up and run the backend server for the Tesla In
 ## Installation
 
 1. Install dependencies:
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 2. Create a `.env.local` file in the root directory with the following variables:
 
-\`\`\`env
+```env
 VITE_API_URL=http://localhost:5000
 
 # SMTP Configuration (for email verification)
@@ -31,24 +31,24 @@ APP_URL=http://localhost:3000
 
 # JWT Secret (change in production)
 JWT_SECRET=your-super-secret-key-change-in-production
-\`\`\`
+```
 
 ## Running the Server
 
 ### Development Mode
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 This starts both the frontend (Vite) and backend server.
 
 ### Production Build
 
-\`\`\`bash
+```bash
 npm run build
 npm run preview
-\`\`\`
+```
 
 ## Database
 

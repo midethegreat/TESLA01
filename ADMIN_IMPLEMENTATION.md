@@ -176,16 +176,16 @@ For each user, the admin can see:
 
 ### Server Logs
 The server logs all actions with `[v0]` prefix for debugging:
-\`\`\`
+```
 [v0] Admin login error: ...
 [v0] KYC approved for user: ...
 [v0] User registered: ...
-\`\`\`
+```
 
 ## Database Schema
 
 ### User Object
-\`\`\`json
+```json
 {
   "id": "unique_id",
   "email": "user@example.com",
@@ -216,23 +216,23 @@ The server logs all actions with `[v0]` prefix for debugging:
     "verifiedBy": "admin"
   }
 }
-\`\`\`
+```
 
 ## Deployment Notes
 
 When deploying to production:
 
 1. Update JWT secret in `server.mjs`:
-   \`\`\`javascript
+   ```javascript
    const JWT_SECRET = process.env.JWT_SECRET || "change-this-in-production"
-   \`\`\`
+   ```
 
 2. Update admin credentials (do not use demo credentials):
-   \`\`\`javascript
+   ```javascript
    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
      // Login logic
    }
-   \`\`\`
+   ```
 
 3. Enable HTTPS for all admin routes
 
