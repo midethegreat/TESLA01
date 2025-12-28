@@ -12,7 +12,26 @@
       "referrerId": null,
       "createdAt": "2025-12-27T21:48:43.305Z",
       "kycStatus": "not submitted",
-      "kycVerified": false
+      "kycVerified": false,
+      "city": "kilo",
+      "joiningDate": "2025-12-27",
+      "phone": "09051435773",
+      "address": "6,akin ajayi street ,ayegbami estate"
+    },
+    {
+      "id": "s2i7df",
+      "email": "lawsonannie033@gmail.com",
+      "password": "$2a$10$Rgd2DhUmUzMAHVJqj7yPrOLurPYsi7AdlzzoPqxePdsDpEqfDo3l.",
+      "firstName": "john",
+      "lastName": "kilo",
+      "country": "Nigeria",
+      "emailVerified": false,
+      "verificationToken": "6yuti50skvp990x7uognuv",
+      "referrerId": null,
+      "createdAt": "2025-12-27T22:45:17.985Z",
+      "kycStatus": "not submitted",
+      "kycVerified": false,
+      "profileImage": "/uploads/s2i7df-1766875855046-button.png"
     }
   ],
   "documents": [],

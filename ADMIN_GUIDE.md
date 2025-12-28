@@ -22,9 +22,9 @@ This document provides complete instructions on accessing and using the admin pa
 To access the admin panel, you have two options:
 
 **Option 1: Direct URL Access**
-```
+\`\`\`
 http://localhost:3000/#/admin
-```
+\`\`\`
 
 **Option 2: Navigate to Admin Page**
 - The admin panel can be accessed directly by navigating to the `/admin` route in your browser
@@ -140,11 +140,11 @@ For each KYC submission, you can view:
 
 ### KYC Status Flow
 
-```
+\`\`\`
 Not Submitted → In Review → Verified
                     ↓
                  Rejected → In Review → Verified
-```
+\`\`\`
 
 ---
 
@@ -180,19 +180,19 @@ The analytics section provides:
 
 ### Admin Access
 
-```
+\`\`\`
 Email: admin@example.com
 Password: password123
 Role: Admin
-```
+\`\`\`
 
 ### SuperAdmin Access
 
-```
+\`\`\`
 Email: superadmin@example.com
 Password: password123
 Role: SuperAdmin
-```
+\`\`\`
 
 ---
 
@@ -271,48 +271,48 @@ Role: SuperAdmin
 ## API Endpoints (For Developers)
 
 ### Admin Authentication
-```
+\`\`\`
 POST /api/admin/login
 Body: { email, password }
 Response: { token, admin }
-```
+\`\`\`
 
 ### Get Dashboard Stats
-```
+\`\`\`
 GET /api/admin/dashboard
 Headers: { Authorization: "Bearer token" }
-```
+\`\`\`
 
 ### Get All Users
-```
+\`\`\`
 GET /api/admin/users
 Headers: { Authorization: "Bearer token" }
-```
+\`\`\`
 
 ### Get KYC Requests
-```
+\`\`\`
 GET /api/admin/kyc-requests
 Headers: { Authorization: "Bearer token" }
-```
+\`\`\`
 
 ### Approve KYC
-```
+\`\`\`
 POST /api/admin/kyc/:userId/approve
 Headers: { Authorization: "Bearer token" }
-```
+\`\`\`
 
 ### Reject KYC
-```
+\`\`\`
 POST /api/admin/kyc/:userId/reject
 Body: { reason }
 Headers: { Authorization: "Bearer token" }
-```
+\`\`\`
 
 ### Get Analytics
-```
+\`\`\`
 GET /api/admin/analytics
 Headers: { Authorization: "Bearer token" }
-```
+\`\`\`
 
 ---
 

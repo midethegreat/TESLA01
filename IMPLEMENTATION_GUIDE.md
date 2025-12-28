@@ -31,7 +31,7 @@ This document provides a complete guide to the new backend system that replaces 
 
 ## File Structure
 
-```
+\`\`\`
 /server
   /db.ts              - Database initialization and schema
   /config.ts          - Configuration constants
@@ -60,18 +60,18 @@ This document provides a complete guide to the new backend system that replaces 
   /tesla.db           - SQLite database (created automatically)
 
 /public/uploads       - Directory for uploaded files
-```
+\`\`\`
 
 ## Getting Started
 
 ### 1. Install Dependencies
-```bash
+\`\`\`bash
 npm install
-```
+\`\`\`
 
 ### 2. Configure Environment Variables
 Create `.env.local` file:
-```env
+\`\`\`env
 VITE_API_URL=http://localhost:5000
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
@@ -81,12 +81,12 @@ SMTP_PASS=your-app-password
 SENDER_EMAIL=noreply@teslainvestment.com
 APP_URL=http://localhost:3000
 JWT_SECRET=your-super-secret-key-change-in-production
-```
+\`\`\`
 
 ### 3. Start the Development Server
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 This will start both frontend (Vite) and backend (Express) servers.
 
@@ -125,7 +125,7 @@ This will start both frontend (Vite) and backend (Express) servers.
 ### Authentication Endpoints
 
 **POST /api/auth/register**
-```json
+\`\`\`json
 {
   "email": "user@example.com",
   "password": "securepassword",
@@ -133,23 +133,23 @@ This will start both frontend (Vite) and backend (Express) servers.
   "lastName": "Doe",
   "country": "Nigeria"
 }
-```
+\`\`\`
 
 **POST /api/auth/login**
-```json
+\`\`\`json
 {
   "email": "user@example.com",
   "password": "securepassword"
 }
-```
+\`\`\`
 
 **POST /api/auth/verify-email**
-```json
+\`\`\`json
 {
   "userId": "user-id-from-register",
   "token": "verification-code-from-email"
 }
-```
+\`\`\`
 
 **GET /api/auth/me** (Requires Authorization header)
 
@@ -171,13 +171,13 @@ This will start both frontend (Vite) and backend (Express) servers.
 **GET /api/profile/image** (Requires Authorization header)
 
 **PUT /api/profile**
-```json
+\`\`\`json
 {
   "firstName": "John",
   "lastName": "Doe",
   "country": "Nigeria"
 }
-```
+\`\`\`
 
 ### Admin Endpoints
 
@@ -264,16 +264,16 @@ All data is automatically restored on app load, ensuring seamless user experienc
 ### For Production
 
 1. **Update Environment Variables**
-   ```
+   \`\`\`
    NODE_ENV=production
    VITE_API_URL=https://yourdomain.com/api
    JWT_SECRET=generate-secure-key
-   ```
+   \`\`\`
 
 2. **Build the Project**
-   ```bash
+   \`\`\`bash
    npm run build
-   ```
+   \`\`\`
 
 3. **Deploy to Server**
    - Use pm2 or systemd for process management
